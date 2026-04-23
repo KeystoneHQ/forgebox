@@ -97,12 +97,14 @@ This writes:
 Treat `private.pem` as sensitive material. Anyone with that file can sign firmware as you.
 
 ### 5. Register Your Public Key On Device
-
-> **Important:** Once the key is registered, ForgeBox can verify firmware packages signed with the matching private key.
->
-> The public key can only be registered once, so store the key pair very safely and carefully.
-
 Register the generated key pair with ForgeBox:
+
+> [!WARNING]
+> **Read this before you register the key.**
+>
+> ForgeBox allows this public key to be registered only once. After registration, the device will verify firmware only from the matching private key.
+>
+> Back up both `private.pem` and `pubkey.pem` and store them safely before you continue.
 
 ```bash
 forgebox register ./my-keys
