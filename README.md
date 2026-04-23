@@ -23,8 +23,9 @@ You can order ForgeBox here: [Order ForgeBox](https://keyst.one/shop/products/ke
 
 ## Who This Page Is For
 
-This guide is for people who ordered ForgeBox and want a practical starting point. It will help you set up ForgeBox and get your first Hello World firmware running.
+This guide is for people who ordered ForgeBox and want a practical starting point. It takes you from device setup to building, signing, and loading your first Hello World firmware.
 
+If you are a developer, this page gives you the shortest path to a working firmware loop on real hardware.
 
 ## What You Need
 
@@ -35,6 +36,8 @@ Before you begin, make sure you have:
 - a computer with Node.js and npm installed
 - `python3` installed if you plan to build firmware
 - an ARM embedded toolchain such as `arm-none-eabi-gcc` if you plan to compile firmware from source
+
+If you want the easiest first build, use the Docker flow in the Hello World example and skip the local toolchain setup for now.
 
 ## Setup In 10 Minutes
 
@@ -49,6 +52,8 @@ npm install -g forgebox-cli
 forgebox --version
 forgebox --help
 ```
+
+If these commands work, your CLI setup is ready.
 
 ### 2. Connect the Device
 
@@ -97,6 +102,7 @@ This writes:
 Treat `private.pem` as sensitive material. Anyone with that file can sign firmware as you.
 
 ### 5. Register Your Public Key On Device
+
 Register the generated key pair with ForgeBox:
 
 > [!WARNING]
@@ -123,6 +129,8 @@ During registration:
 
 The fastest way to prove your setup works is to build the Hello World example, sign it, and load it onto the device.
 
+The example project is available here: [forgebox-helloworld](https://github.com/KeystoneHQ/forgebox-helloworld).
+
 ### 1. Open the Hello World Example
 
 Use the `forgebox-helloworld` example project.
@@ -135,7 +143,7 @@ cd forgebox-helloworld
 
 ### 2. Build the Firmware
 
-You can build it either locally or with Docker.
+You can build it either locally or with Docker. If this is your first time, Docker is usually the simplest option.
 
 **Option A: Build locally**
 
@@ -157,6 +165,8 @@ docker rm "$container_id"
 
 This also gives you `build/mh1903_full.bin`.
 
+At this point, you should have a firmware file ready to sign.
+
 ### 3. Sign the Firmware
 
 Turn the built firmware into a signed OTA package with the private key you registered earlier:
@@ -176,6 +186,18 @@ This creates `build/forgebox.bin`, which is the file you load onto the device.
 
 After the upgrade completes, ForgeBox should boot into the Hello World firmware.
 
+### 5. Erasing or Reflashing
+
+After running Hello World, connect the USB cable and hold the power button for 12 seconds to enter ForgeBox Recovery Mode. From there, you can flash a different firmware image or remove the Hello World firmware.
+
+### 6. What's Next
+
+With ForgeBox, you can build what you want and load it onto your own device. Your firmware is built and signed by you, so the entire process stays under your control.
+
+If you want to go further, the open-source [Keystone 3 firmware](https://github.com/KeystoneHQ/keystone3-firmware) is a good next step. You can use it as a starting point and build firmware that fits your own needs.
+
+Happy hacking and happy building.
+
 
 ## If You Get Stuck
 
@@ -186,4 +208,7 @@ After the upgrade completes, ForgeBox should boot into the Hello World firmware.
 
 If those steps work, your hardware path, key registration, and firmware package are usually in good shape.
 
+## Contact
+
+For support or inquiries, please contact us at eng@keyst.one
 
