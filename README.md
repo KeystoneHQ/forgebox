@@ -105,13 +105,15 @@ forgebox register ./my-keys
 ```
 
 During registration:
+1. Confirm that your ForgeBox is on the same registration step shown in the image below.
+2. The CLI checks that the public and private key match.
+3. The device displays a fingerprint.
+4. Compare the fingerprint shown in the terminal with the one shown on the device.
+5. If they match, confirm on the device.
 
-1. The CLI checks that the public and private key match.
-2. The device shows a fingerprint.
-3. You compare the fingerprint shown in the terminal with the one shown on the device.
-4. You confirm on the device.
+![Key registration flow](./registeration.png)
 
-> **Important:** Once registered, ForgeBox can verify firmware packages signed with the matching private key.
+> **Important:** Once the key is registered, ForgeBox can verify firmware packages signed with the matching private key.
 >
 > The public key can only be registered once, so store the key pair very safely and carefully.
 
