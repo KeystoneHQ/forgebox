@@ -42,6 +42,8 @@ Before you begin, make sure you have:
 
 ForgeBox is managed through the ForgeBox CLI.
 
+Source code and full CLI documentation are available in the [forgebox-cli repository](https://github.com/KeystoneHQ/forgebox-cli).
+
 ```bash
 npm install -g forgebox-cli
 forgebox --version
@@ -109,102 +111,75 @@ During registration:
 3. You compare the fingerprint shown in the terminal with the one shown on the device.
 4. You confirm on the device.
 
-Once registered, ForgeBox can verify firmware packages signed with the matching private key.
+> **Important:** Once registered, ForgeBox can verify firmware packages signed with the matching private key.
+>
+> The public key can only be registered once, so store the key pair very safely and carefully.
 
-## Your First Real Workflow
+## Build and Load Hello World Firmware
 
-After setup, most users do one of these three things first.
+The fastest way to prove your setup works is to build the Hello World example, sign it, and load it onto the device.
 
-### Option A: Explore The Device
+### 1. Open the Hello World Example
 
-Use this if you want to confirm the hardware path before touching firmware.
+Use the `forgebox-helloworld` example project.
 
-```bash
-forgebox list-devices
-forgebox status
-```
-
-This is the safest first step and the right place to start if you are evaluating hardware quality, connectivity, or tooling.
-
-### Option B: Build Custom Firmware
-
-Clone the firmware repository:
+If you already have the repository locally:
 
 ```bash
-git clone https://github.com/keystonehq/forgebox-firmware.git
+cd forgebox-helloworld
 ```
 
-Then build it:
+### 2. Build the Firmware
+
+You can build it either locally or with Docker.
+
+**Option A: Build locally**
 
 ```bash
-forgebox build:firmware ./forgebox-firmware -o ./my-firmware
+python3 build.py -e production
 ```
 
-The CLI runs the firmware build process and writes the resulting binary to your output directory.
+This produces `build/mh1903_full.bin`.
 
-Use this path if you are:
-
-- testing protocol ideas
-- modifying cryptographic logic
-- prototyping a custom hardware-backed application
-
-### Option C: Sign An OTA Package
-
-Once you have a firmware binary, turn it into a signed OTA package:
+**Option B: Build with Docker**
 
 ```bash
-forgebox sign --s ./my-firmware/mh1903_full.bin --d ./my-firmware/forgebox.bin --key ./my-keys/private.pem
+docker build --target builder -t forgebox-helloworld-builder .
+
+container_id=$(docker create forgebox-helloworld-builder)
+docker cp "$container_id":/forgebox-helloworld/build ./build
+docker rm "$container_id"
 ```
 
-This produces an OTA image that can be verified by the device using your registered key.
+This also gives you `build/mh1903_full.bin`.
 
-## Suggested Learning Path
+### 3. Sign the Firmware
 
-If this is your first day with ForgeBox, use this order:
+Turn the built firmware into a signed OTA package with the private key you registered earlier:
 
-1. Install the CLI.
-2. Connect the device and run `forgebox status`.
-3. Generate a new key pair.
-4. Register the public key on the device.
-5. Build stock firmware from source.
-6. Sign the resulting firmware.
-7. Move on to your own modifications.
+```bash
+forgebox sign --s ./build/mh1903_full.bin --d ./build/forgebox.bin --key ./my-keys/private.pem
+```
 
-That sequence keeps hardware verification, key setup, and firmware customization clearly separated.
+This creates `build/forgebox.bin`, which is the file you load onto the device.
 
-## Safety Notes
+### 4. Load It Onto ForgeBox
 
-- Do not reuse experimental signing keys for anything production-critical.
-- Do not load firmware you do not understand onto a device holding real secrets.
-- Back up your key material before making signing part of your workflow.
-- Keep your private key outside version control.
+1. Copy `build/forgebox.bin` to an SD card.
+2. Insert the SD card into ForgeBox.
+3. Start the firmware upgrade flow on the device.
+4. Select the signed firmware package and confirm the upgrade.
 
-## What You Can Build With ForgeBox
+After the upgrade completes, ForgeBox should boot into the Hello World firmware.
 
-ForgeBox is intended to support open-ended development. A few obvious directions are:
-
-- your own hardware-backed signer or HSM-like workflow
-- blockchain protocol prototypes and custom key-management systems
-- agent systems that need isolated signing or secret storage
-- classroom or workshop demos for applied cryptography
 
 ## If You Get Stuck
 
-Start with the smallest working loop:
-
 1. Check that the device is visible with `forgebox list-devices`.
 2. Check that `forgebox status` returns device information.
-3. Regenerate a clean key pair and retry registration.
+3. Confirm that `build/mh1903_full.bin` exists before running `forgebox sign`.
+4. Regenerate a clean key pair and retry registration if signing or verification fails.
 
-If those steps work, the hardware connection and CLI are in good shape, and the next problem is usually in your firmware or signing flow.
-
-## First Draft Notes
-
-This is a first-pass onboarding page. The next version can add:
-
-- screenshots of the device registration flow
-- a dedicated firmware flashing section
-- a QR-based workflow section
-- links to firmware examples and starter projects
+If those steps work, your hardware path, key registration, and firmware package are usually in good shape.
 
 
