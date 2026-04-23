@@ -98,6 +98,10 @@ Treat `private.pem` as sensitive material. Anyone with that file can sign firmwa
 
 ### 5. Register Your Public Key On Device
 
+> **Important:** Once the key is registered, ForgeBox can verify firmware packages signed with the matching private key.
+>
+> The public key can only be registered once, so store the key pair very safely and carefully.
+
 Register the generated key pair with ForgeBox:
 
 ```bash
@@ -112,10 +116,6 @@ During registration:
 5. If they match, confirm on the device.
 
 ![Key registration flow](./registeration.png)
-
-> **Important:** Once the key is registered, ForgeBox can verify firmware packages signed with the matching private key.
->
-> The public key can only be registered once, so store the key pair very safely and carefully.
 
 ## Build and Load Hello World Firmware
 
