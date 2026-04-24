@@ -190,7 +190,7 @@ After the upgrade completes, ForgeBox should boot into the Hello World firmware.
 
 ### 5. Erasing or Reflashing
 
-After running Hello World, connect the USB cable and hold the power button for 12 seconds to enter ForgeBox Recovery Mode. From there, you can flash a different firmware image or remove the Hello World firmware.
+After running Hello World, hold the power button for 6+ seconds to enter ForgeBox Recovery Mode. From there, you can flash a different firmware image or remove the Hello World firmware.
 
 ### 6. What's Next
 
