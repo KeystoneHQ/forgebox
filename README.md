@@ -123,7 +123,9 @@ During registration:
 4. Compare the fingerprint shown in the terminal with the one shown on the device.
 5. If they match, confirm on the device.
 
-![Key registration flow](./registeration.png)
+<p align="center">
+	<img src="./registeration.png" alt="Key registration flow" width="35%" />
+</p>
 
 ## Build and Load Hello World Firmware
 
