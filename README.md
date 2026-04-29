@@ -91,15 +91,17 @@ ForgeBox uses your key material for signing and registration workflows.
 Create a fresh key pair:
 
 ```bash
-forgebox keygen --out ./my-keys
+forgebox keygen
 ```
 
-This writes:
+This writes, by default:
 
-- `./my-keys/private.pem`
-- `./my-keys/pubkey.pem`
+- `~/.forgebox/keys/private.pem` (mode `0600`)
+- `~/.forgebox/keys/pubkey.pem` (mode `0644`)
 
-Treat `private.pem` as sensitive material. Anyone with that file can sign firmware as you.
+Pass `--out <dir>` if you want a different location. The CLI refuses to write keys into a git working tree unless you pass `--force` — a committed private key is equivalent to publishing it.
+
+Treat `private.pem` as sensitive material. Anyone with that file can sign firmware as you. Do not paste its contents on the command line or into chat tools.
 
 ### 5. Register Your Public Key On Device
 
@@ -113,7 +115,7 @@ Register the generated key pair with ForgeBox:
 > Back up both `private.pem` and `pubkey.pem` and store them safely before you continue.
 
 ```bash
-forgebox register ./my-keys
+forgebox register ~/.forgebox/keys
 ```
 
 During registration:
@@ -174,10 +176,12 @@ At this point, you should have a firmware file ready to sign.
 Turn the built firmware into a signed OTA package with the private key you registered earlier:
 
 ```bash
-forgebox sign --s ./build/mh1903_full.bin --d ./build/forgebox.bin --key ./my-keys/private.pem
+forgebox sign --s ./build/mh1903_full.bin \
+              --d ./build/forgebox.bin \
+              --key ~/.forgebox/keys/private.pem
 ```
 
-This creates `build/forgebox.bin`, which is the file you load onto the device.
+For security, `sign` only accepts a PEM private key file path. This creates `build/forgebox.bin`, which is the file you load onto the device.
 
 ### 4. Load It Onto ForgeBox
 
