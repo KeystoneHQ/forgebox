@@ -204,6 +204,11 @@ If you want to go further, the open-source [Keystone 3 firmware](https://github.
 
 Happy hacking and happy building.
 
+## Important Notes
+
+- **Boot write area: `0x01000000 ~ 0x01080FFF`** — Do not modify this region. Corrupting the boot area can brick the device and prevent it from starting.
+
+- **Fingerprint communication key page: `DS28S60 PAGE_PF_AES_KEY = 82`** — Do not modify this page. Overwriting the fingerprint AES key page can cause the fingerprint module to malfunction.
 
 ## If You Get Stuck
 
