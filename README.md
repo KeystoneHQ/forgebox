@@ -200,11 +200,16 @@ After running Hello World, hold the power button for 6+ seconds to enter ForgeBo
 
 With ForgeBox, you can build what you want and load it onto your own device. Your firmware is built and signed by you, so the entire process stays under your control.
 
-If you want to go further, the open-source [Keystone 3 firmware](https://github.com/KeystoneHQ/keystone3-firmware) is a good next step. You can use it as a starting point and build firmware that fits your own needs.
+If you want to go further, you can study the open-source [Keystone 3 firmware](https://github.com/KeystoneHQ/keystone3-firmware) for architecture and implementation ideas.
+
+> [!WARNING]
+> The Keystone 3 firmware is provided only as a reference; it is not a drop-in ForgeBox firmware. An incorrect build or device configuration can cause an unrecoverable failure. Proceed only if you understand the source code, build configuration, signing, and flashing process. You are responsible for the firmware you build and install, including any resulting device damage or data loss.
 
 Happy hacking and happy building.
 
 ## Important Notes
+
+- **You are responsible for your firmware** — Understand and review the code and configuration before building or flashing it. Incorrect code or configuration can cause an unrecoverable failure. You are responsible for the firmware you build and install, including any resulting device damage or data loss.
 
 - **Boot write area: `0x01000000 ~ 0x01080FFF`** — Do not modify this region. Corrupting the boot area can brick the device and prevent it from starting.
 
